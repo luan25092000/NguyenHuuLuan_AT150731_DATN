@@ -1,14 +1,10 @@
 <?php
-    session_start();
     define('AES_256_CBC', 'aes-256-cbc');
     if (isset($_POST['submit'])) {
         $data = file_get_contents($_FILES['image']['tmp_name']);
         $encryption_key = $_POST['key'];
-        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length(AES_256_CBC));
+        $iv = hex2bin("504914019097319c9731fc639abaa6ec");
         $encrypted = openssl_encrypt($data, AES_256_CBC, $encryption_key, 0, $iv);
-        $encrypted = $encrypted . ':' . base64_encode($iv);
-        $parts = explode(':', $encrypted);
-        $_SESSION['parts'] = $parts;
         $imgName = date('dmYHis') . '_' . $_FILES['image']['name'];
         file_put_contents('uploads/' . $imgName, $encrypted);
     }
@@ -38,14 +34,16 @@
                 <span class="image-preview__default-text">Image</span>
             </div>
             <div class="form-group">
-                <label>Key</label>
+                <label>Key <span class="text-danger">*</span></label>
                 <textarea name="key" class="form-control" cols="10" rows="3" required></textarea>
             </div>
             <button type="submit" name="submit" class="btn btn-primary">Encrypt</button>
         </form>
         <?php if (isset($encrypted)): ?>
             <img class="mt-4" src="./uploads/<?= $imgName ?>" width="200" />
-            <a class="mt-2" href="./uploads/<?= $imgName ?>" download="">Download</a>
+            <div class="mt-2">
+                <a href="./uploads/<?= $imgName ?>" download>Download</a>
+            </div>
         <?php endif ?>
     </div>
     <script src="js/image.js"></script>
