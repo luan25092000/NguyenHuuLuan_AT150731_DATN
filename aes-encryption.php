@@ -7,6 +7,9 @@
         $encrypted = openssl_encrypt($data, AES_256_CBC, $encryption_key, 0, $iv);
         $imgName = date('dmYHis') . '_' . $_FILES['image']['name'];
         file_put_contents('uploads/' . $imgName, $encrypted);
+        echo "<script type='text/javascript'>
+            alert('Encrypt successfully !');
+        </script>";
     }
 ?>
 <!DOCTYPE html>
@@ -40,9 +43,8 @@
             <button type="submit" name="submit" class="btn btn-primary">Encrypt</button>
         </form>
         <?php if (isset($encrypted)): ?>
-            <img class="mt-4" src="./uploads/<?= $imgName ?>" width="200" />
             <div class="mt-2">
-                <a href="./uploads/<?= $imgName ?>" download>Download</a>
+                Please click <a href="./uploads/<?= $imgName ?>" download>here</a> to download encrypted image
             </div>
         <?php endif ?>
     </div>

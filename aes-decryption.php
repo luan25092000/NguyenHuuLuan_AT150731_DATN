@@ -9,6 +9,9 @@
         $decrypted = openssl_decrypt($parts[0], AES_256_CBC, $encryption_key, 0, base64_decode($parts[1]));
         $imgName = date('dmYHis') . '_' . $_FILES['image']['name'];
         file_put_contents('uploads/' . $imgName, $decrypted);
+        echo "<script type='text/javascript'>
+            alert('Decrypt successfully !');
+        </script>";
     }
 ?>
 <!DOCTYPE html>
@@ -42,9 +45,9 @@
             <button type="submit" name="submit" class="btn btn-primary">Decrypt</button>
         </form>
         <?php if (isset($decrypted)): ?>
-            <img class="mt-4" src="./uploads/<?= $imgName ?>" width="200" />
+            <img class="mt-4" src="./uploads/<?= $imgName ?>" width="150" />
             <div class="mt-2">
-                <a href="./uploads/<?= $imgName ?>" download>Download</a>
+                Please click <a href="./uploads/<?= $imgName ?>" download>here</a> to download decrypted image
             </div>
         <?php endif ?>
     </div>
